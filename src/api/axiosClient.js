@@ -1,13 +1,18 @@
-import axios from "axios";
+// src/api/axiosClient.js
+import axios from 'axios'
 
-const api = axios.create({
-  baseURL: "http://127.0.0.1:8000/api",
-});
+const axiosClient = axios.create({
+  baseURL: 'https://fakestoreapi.com',
+  timeout: 10000,
+})
 
-api.interceptors.request.use(config => {
-  const token = localStorage.getItem("token");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+// Response interceptor for handling errors
+axiosClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error('API Error:', error)
+    return Promise.reject(error)
+  }
+)
 
-export default api;
+export default axiosClient
